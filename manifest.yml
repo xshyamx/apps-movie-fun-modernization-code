@@ -1,0 +1,11 @@
+applications:
+- name: moviefun
+  buildpack: java_buildpack_offline
+  path: build/libs/moviefun-1.1.0-SNAPSHOT.war
+  routes:
+  - route: moviefun-modernization-rahul.apps.longs.pal.pivotal.io
+  services:
+  - moviefun-s3
+  - movies-mysql
+
+
