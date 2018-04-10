@@ -8,3 +8,6 @@ applications:
   - route: movie-fun-app-va.apps.longs.pal.pivotal.io
   services:
   - movies-database
+  - movies-s3
+  env:
+    S3_ENDPOINTURL: https://s3.amazonaws.com
