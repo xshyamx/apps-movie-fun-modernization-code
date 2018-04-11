@@ -7,7 +7,31 @@ applications:
   routes:
   - route: movie-fun-app-va.apps.longs.pal.pivotal.io
   services:
+  - movies-s3
+  env:
+    S3_ENDPOINTURL: https://s3.amazonaws.com
+    MOVIES_URL: https://movie-service-va.apps.longs.pal.pivotal.io
+    ALBUMS_URL: https://album-service-va.apps.longs.pal.pivotal.io
+- name: movie-service
+  path: applications/movie-service/build/libs/movie-service-1.0.war
+  buildpack: java_buildpack_offline
+  instances: 1
+  memory: 1G
+  routes:
+  - route: movie-service-va.apps.longs.pal.pivotal.io
+  services:
   - movies-database
+  env:
+    S3_ENDPOINTURL: https://s3.amazonaws.com
+- name: album-service
+  path: applications/album-service/build/libs/album-service-1.0.war
+  buildpack: java_buildpack_offline
+  instances: 1
+  memory: 1G
+  routes:
+  - route: album-service-va.apps.longs.pal.pivotal.io
+  services:
+  - albums-database
   - movies-s3
   env:
     S3_ENDPOINTURL: https://s3.amazonaws.com

@@ -1,4 +1,4 @@
-# Movie Fun!
+	# Movie Fun!
 
 Smoke Tests require server running on port 8080 by default.
 
@@ -14,6 +14,14 @@ $ ./gradlew clean build -xtest
 $ MOVIE_FUN_URL=http://moviefun.example.com ./gradlew test
 ```
 
+
+## Create services
+
+```sh
+cf create-service p-mysql p-mysql albums-database
+cf create-service p-mysql p-mysql movies-database
+```
+
 ## After deploying to CF
 
 ```sh
@@ -26,4 +34,8 @@ Populate the values from the above command
 cf set-env movie-fun-app S3_ACCESSKEY "AKIAJTPQLEXPN3ELEVWQ" 
 cf set-env movie-fun-app S3_SECRETKEY  "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"
 cf set-env movie-fun-app S3_BUCKETNAME "cf-b54053b4-2206-441e-ad42-8646849043b2"
+
+cf set-env album-service S3_ACCESSKEY "AKIAJTPQLEXPN3ELEVWQ" 
+cf set-env album-service S3_SECRETKEY  "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"
+cf set-env album-service S3_BUCKETNAME "cf-b54053b4-2206-441e-ad42-8646849043b2"
 ```
