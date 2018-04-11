@@ -1,7 +1,5 @@
 dependencies {
 
-    compile project(":components:blob-support")
-
     compile "org.springframework:spring-web:$springVersion"
 
     compile "javax.servlet:javax.servlet-api:3.1.0"
