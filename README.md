@@ -32,11 +32,9 @@ cf env movie-fun-app
 Populate the values from the above command 
 
 ```sh
-cf set-env movie-fun-app S3_ACCESSKEY "AKIAJTPQLEXPN3ELEVWQ" 
-cf set-env movie-fun-app S3_SECRETKEY  "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"
-cf set-env movie-fun-app S3_BUCKETNAME "cf-b54053b4-2206-441e-ad42-8646849043b2"
-
-cf set-env album-service S3_ACCESSKEY "AKIAJTPQLEXPN3ELEVWQ" 
-cf set-env album-service S3_SECRETKEY  "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"
-cf set-env album-service S3_BUCKETNAME "cf-b54053b4-2206-441e-ad42-8646849043b2"
+for app in movie-fun-app album-service; do
+  cf set-env $app S3_ACCESSKEY "AKIAJTPQLEXPN3ELEVWQ" 
+  cf set-env $app S3_SECRETKEY  "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"
+  cf set-env $app S3_BUCKETNAME "cf-b54053b4-2206-441e-ad42-8646849043b2"
+done
 ```

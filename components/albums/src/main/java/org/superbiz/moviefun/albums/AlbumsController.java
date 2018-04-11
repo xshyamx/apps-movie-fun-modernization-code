@@ -2,10 +2,7 @@ package org.superbiz.moviefun.albums;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.superbiz.moviefun.blobstore.BlobStore;
 
 import java.util.List;
@@ -23,6 +20,10 @@ public class AlbumsController {
         this.blobStore = blobStore;
     }
 
+    @PostMapping
+    public void add(@RequestBody Album album) {
+        albumsRepository.addAlbum(album);
+    }
 
     @GetMapping
     public List<Album> index() {

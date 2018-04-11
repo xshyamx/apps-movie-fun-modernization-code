@@ -10,8 +10,8 @@ applications:
   - movies-s3
   env:
     S3_ENDPOINTURL: https://s3.amazonaws.com
-    MOVIES_URL: https://movie-service-va.apps.longs.pal.pivotal.io
-    ALBUMS_URL: https://album-service-va.apps.longs.pal.pivotal.io
+    MOVIES_URL: https://movie-service-va.apps.longs.pal.pivotal.io/movies
+    ALBUMS_URL: https://album-service-va.apps.longs.pal.pivotal.io/albums
 - name: movie-service
   path: applications/movie-service/build/libs/movie-service-1.0.war
   buildpack: java_buildpack_offline
