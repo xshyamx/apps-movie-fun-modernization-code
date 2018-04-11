@@ -7,11 +7,27 @@ resources:
     branch: {{github-branch}}
     private_key: {{github-private-key}}
 
-- name: apps-movie-fun-modernization-code-artifacts
+- name: movie-fun-app-artifacts
   type: s3
   source:
     bucket: {{aws-bucket}}
-    regexp: releases/struts-(.*).war
+    regexp: releases/movie-fun-app-(.*).war
+    access_key_id: {{aws-access-key-id}}
+    secret_access_key: {{aws-secret-access-key}}
+
+- name: movie-service-artifacts
+  type: s3
+  source:
+    bucket: {{aws-bucket}}
+    regexp: releases/movie-service-(.*).war
+    access_key_id: {{aws-access-key-id}}
+    secret_access_key: {{aws-secret-access-key}}
+
+- name: album-service-artifacts
+  type: s3
+  source:
+    bucket: {{aws-bucket}}
+    regexp: releases/album-service-(.*).war
     access_key_id: {{aws-access-key-id}}
     secret_access_key: {{aws-secret-access-key}}
 
@@ -42,21 +58,51 @@ jobs:
     params: {bump: patch}
   - task: build
     file: apps-movie-fun-modernization-code/ci/build.yml
-  - put: apps-movie-fun-modernization-code-artifacts
+  - put: movie-fun-artifacts
     params:
-      file: build-output/movie-fun-app-*.war
+      file: build-output/movie-service-*.war
+  - put: movie-fun-artifacts
+    params:
+      file: build-output/movie-service-*.war
+  - put: album-fun-artifacts
+    params:
+      file: build-output/album-service-*.war
   - put: version
     params:
       file: version/number
 
-- name: deploy-sandbox
+- name: deploy-movie-fun-app
   plan:
   - get: apps-movie-fun-modernization-code
     passed: [build]
-  - get: apps-movie-fun-modernization-code-artifacts
+  - get: movie-fun-app-artifacts
     trigger: true
     passed: [build]
   - put: sandbox-deployment
     params:
-      manifest: apps-movie-fun-modernization-code/manifest.yml
+      manifest: apps-movie-fun-modernization-code/ci/movie-fun-app.yml
       path: apps-movie-fun-modernization-code-artifacts/movie-fun-app-*.war
+
+- name: deploy-movie-service
+  plan:
+  - get: apps-movie-fun-modernization-code
+    passed: [build]
+  - get: movie-service-artifacts
+    trigger: true
+    passed: [build]
+  - put: sandbox-deployment
+    params:
+      manifest: apps-movie-fun-modernization-code/ci/movie-service.yml
+      path: apps-movie-fun-modernization-code-artifacts/movie-service-*.war
+
+- name: deploy-album-service
+  plan:
+  - get: apps-album-fun-modernization-code
+    passed: [build]
+  - get: album-service-artifacts
+    trigger: true
+    passed: [build]
+  - put: sandbox-deployment
+    params:
+      manifest: apps-album-fun-modernization-code/ci/album-service.yml
+      path: apps-album-fun-modernization-code-artifacts/album-service-*.war

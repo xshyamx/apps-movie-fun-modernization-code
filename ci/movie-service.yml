@@ -1,0 +1,10 @@
+applications:
+- name: movie-service
+  path: applications/movie-service/build/libs/movie-service-1.0.war
+  buildpack: java_buildpack_offline
+  instances: 1
+  memory: 1G
+  routes:
+  - route: movie-service-va.apps.longs.pal.pivotal.io
+  services:
+  - movies-database

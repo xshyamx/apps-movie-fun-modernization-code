@@ -1,0 +1,14 @@
+applications:
+- name: movie-fun-app
+  path: applications/movie-fun-app/build/libs/movie-fun-app-1.0.war
+  buildpack: java_buildpack_offline
+  instances: 1
+  memory: 1G
+  routes:
+  - route: movie-fun-app-va.apps.longs.pal.pivotal.io
+  services:
+  - movies-s3
+  env:
+    S3_ENDPOINTURL: https://s3.amazonaws.com
+    MOVIES_URL: https://movie-service-va.apps.longs.pal.pivotal.io/movies
+    ALBUMS_URL: https://album-service-va.apps.longs.pal.pivotal.io/albums

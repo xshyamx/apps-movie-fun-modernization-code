@@ -19,29 +19,10 @@ run:
   - -exc
   - |
 
-    export DEBIAN_FRONTEND="noninteractive"
-    apt-get update
-    apt-get -y install mysql-server
-    service mysql start
-    mysql -uroot <<EOF
-      DROP DATABASE IF EXISTS movies;
-      CREATE DATABASE movies;
-      CREATE USER IF NOT EXISTS 'movie-user'@'localhost' identified by 'movie-password';
-      GRANT ALL PRIVILEGES ON movies.* TO 'movie-user'@'localhost';
-      FLUSH PRIVILEGES;
-    EOF
-    export MYSQL_HOST=localhost
-    export MYSQL_USER=movie-user
-    export MYSQL_PASSWORD=movie-password
-    wget https://dl.minio.io/server/minio/release/linux-amd64/minio
-    chmod +x minio
-    mv minio /usr/local/bin/
-    export MINIO_ACCESS_KEY=minio
-    export MINIO_SECRET_KEY=miniostorage
-    minio server /data &
-    MINIO_PID=$!
     cd apps-movie-fun-modernization-code
-    ./gradlew build
-    cp applications/movie-fun-app/build/libs/movie-fun-app-1.0.war ../build-output/movie-fun-app-$(cat ../version/number).war
-    service mysql stop
-    kill -9 $MINIO_PID
+    ./gradlew build -x test
+    for app in movie-fun-app album-service movie-service; do
+      cp \
+        applications/${app}/build/libs/${app}-1.0.war \
+	../build-output/${app}-$(cat ../version/number).war
+    done

@@ -1,0 +1,12 @@
+applications:
+- name: album-service
+  path: applications/album-service/build/libs/album-service-1.0.war
+  buildpack: java_buildpack_offline
+  instances: 1
+  memory: 1G
+  routes:
+  - route: album-service-va.apps.longs.pal.pivotal.io
+  services:
+  - albums-database
+  env:
+    S3_ENDPOINTURL: https://s3.amazonaws.com
