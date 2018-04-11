@@ -24,8 +24,8 @@ public class MoviesController {
     }
 
     @DeleteMapping("/{movieId}")
-    public void deleteMovie(@PathVariable Long id) {
-        repository.deleteMovieId(id);
+    public void deleteMovie(@PathVariable Long movieId) {
+        repository.deleteMovieId(movieId);
     }
 
     @GetMapping("/count")

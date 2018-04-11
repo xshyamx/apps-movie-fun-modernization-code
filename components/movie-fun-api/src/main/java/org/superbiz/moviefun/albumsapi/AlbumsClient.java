@@ -40,6 +40,7 @@ public class AlbumsClient {
     }
 
     public void addAlbum(AlbumInfo album) {
+        log.debug("postForEntity({}, {})", albumsUrl, album);
         restOperations.postForEntity(albumsUrl, album, ResponseEntity.class);
     }
 
