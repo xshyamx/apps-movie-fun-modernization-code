@@ -1,6 +1,9 @@
 package org.superbiz.moviefun.moviesapi;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.style.ToStringCreator;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -9,6 +12,7 @@ import java.util.List;
 import static org.springframework.http.HttpMethod.GET;
 
 public class MoviesClient {
+    public static final Logger log = LoggerFactory.getLogger(MoviesClient.class);
 
     private String moviesUrl;
     private RestOperations restOperations;
@@ -22,6 +26,7 @@ public class MoviesClient {
     }
 
     public void addMovie(MovieInfo movie) {
+        log.debug("postForEntity({}, {})", moviesUrl, movie);
         restOperations.postForEntity(moviesUrl, movie, MovieInfo.class);
     }
 

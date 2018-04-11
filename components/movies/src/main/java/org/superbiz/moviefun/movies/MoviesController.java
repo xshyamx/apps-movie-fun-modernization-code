@@ -1,5 +1,7 @@
 package org.superbiz.moviefun.movies;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.List;
 @RequestMapping("/movies")
 public class MoviesController {
 
+    public static final Logger log = LoggerFactory.getLogger(MoviesController.class);
     private final MoviesRepository repository;
 
     public MoviesController(MoviesRepository repository) {
@@ -15,7 +18,8 @@ public class MoviesController {
     }
 
     @PostMapping
-    public void addMovie(Movie movie) {
+    public void addMovie(@RequestBody Movie movie) {
+        log.debug("addMovie({})", movie);
         repository.addMovie(movie);
     }
 

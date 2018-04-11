@@ -14,14 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.superbiz.moviefun;
+package org.superbiz.moviefun.movies;
 
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.superbiz.moviefun.moviesapi.MovieInfo;
-import org.superbiz.moviefun.moviesapi.MoviesClient;
 
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,13 +30,17 @@ import java.util.List;
  * @version $Revision$ $Date$
  */
 @Component
-public class ActionServlet extends HttpServlet {
+public class MovieServlet extends HttpServlet {
 
     private static final long serialVersionUID = -5832176047021911038L;
 
     public static int PAGE_SIZE = 5;
 
-    private MoviesClient moviesClient;
+    private MoviesRepository moviesRepository;
+
+    public MovieServlet(MoviesRepository MoviesRepository) {
+        this.moviesRepository = MoviesRepository;
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -62,9 +63,9 @@ public class ActionServlet extends HttpServlet {
             int rating = Integer.parseInt(request.getParameter("rating"));
             int year = Integer.parseInt(request.getParameter("year"));
 
-            MovieInfo movie = new MovieInfo(title, director, genre, rating, year);
+            Movie movie = new Movie(title, director, genre, rating, year);
 
-            moviesClient.addMovie(movie);
+            moviesRepository.addMovie(movie);
             response.sendRedirect("moviefun");
             return;
 
@@ -72,7 +73,7 @@ public class ActionServlet extends HttpServlet {
 
             String[] ids = request.getParameterValues("id");
             for (String id : ids) {
-                moviesClient.deleteMovieId(new Long(id));
+                moviesRepository.deleteMovieId(new Long(id));
             }
 
             response.sendRedirect("moviefun");
@@ -85,11 +86,11 @@ public class ActionServlet extends HttpServlet {
             int count = 0;
 
             if (StringUtils.isEmpty(key) || StringUtils.isEmpty(field)) {
-                count = moviesClient.countAll();
+                count = moviesRepository.countAll();
                 key = "";
                 field = "";
             } else {
-                count = moviesClient.count(field, key);
+                count = moviesRepository.count(field, key);
             }
 
             int page = 1;
@@ -113,12 +114,12 @@ public class ActionServlet extends HttpServlet {
             }
 
             int start = (page - 1) * PAGE_SIZE;
-            List<MovieInfo> range;
+            List<Movie> range;
 
             if (StringUtils.isEmpty(key) || StringUtils.isEmpty(field)) {
-                range = moviesClient.findAll(start, PAGE_SIZE);
+                range = moviesRepository.findAll(start, PAGE_SIZE);
             } else {
-                range = moviesClient.findRange(field, key, start, PAGE_SIZE);
+                range = moviesRepository.findRange(field, key, start, PAGE_SIZE);
             }
 
             int end = start + range.size();
