@@ -58,13 +58,13 @@ jobs:
     params: {bump: patch}
   - task: build
     file: apps-movie-fun-modernization-code/ci/build.yml
-  - put: movie-fun-artifacts
+  - put: movie-fun-app-artifacts
+    params:
+      file: build-output/movie-app-fun-*.war
+  - put: movie-service-artifacts
     params:
       file: build-output/movie-service-*.war
-  - put: movie-fun-artifacts
-    params:
-      file: build-output/movie-service-*.war
-  - put: album-fun-artifacts
+  - put: album-service-artifacts
     params:
       file: build-output/album-service-*.war
   - put: version
@@ -97,12 +97,12 @@ jobs:
 
 - name: deploy-album-service
   plan:
-  - get: apps-album-fun-modernization-code
+  - get: apps-movie-fun-modernization-code
     passed: [build]
   - get: album-service-artifacts
     trigger: true
     passed: [build]
   - put: sandbox-deployment
     params:
-      manifest: apps-album-fun-modernization-code/ci/album-service.yml
-      path: apps-album-fun-modernization-code-artifacts/album-service-*.war
+      manifest: apps-movie-fun-modernization-code/ci/album-service.yml
+      path: apps-movie-fun-modernization-code-artifacts/album-service-*.war
