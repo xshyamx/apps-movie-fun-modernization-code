@@ -106,4 +106,15 @@ public class Album implements Serializable {
         if (one != null ? !one.equals(other) : other != null) return false;
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Album{" +
+                "id=" + id +
+                ", artist='" + artist + '\'' +
+                ", title='" + title + '\'' +
+                ", year=" + year +
+                ", rating=" + rating +
+                '}';
+    }
 }

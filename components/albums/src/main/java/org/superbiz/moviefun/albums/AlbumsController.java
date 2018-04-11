@@ -22,6 +22,7 @@ public class AlbumsController {
 
     @PostMapping
     public void add(@RequestBody Album album) {
+        logger.debug("album-service add({})", album);
         albumsRepository.addAlbum(album);
     }
 
