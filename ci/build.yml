@@ -24,5 +24,5 @@ run:
     for app in movie-fun-app album-service movie-service; do
       cp \
         applications/${app}/build/libs/${app}-1.0.war \
-	../build-output/${app}-$(cat ../version/number).war
+        ../build-output/${app}-$(cat ../version/number).war
     done
