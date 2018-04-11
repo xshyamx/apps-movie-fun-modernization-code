@@ -20,6 +20,7 @@ $ MOVIE_FUN_URL=http://moviefun.example.com ./gradlew test
 ```sh
 cf create-service p-mysql p-mysql albums-database
 cf create-service p-mysql p-mysql movies-database
+cf create-service aws-s3 standard movies-s3
 ```
 
 ## After deploying to CF
