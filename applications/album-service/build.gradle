@@ -3,7 +3,7 @@ apply plugin: "org.springframework.boot"
 
 dependencies {
 
-    compile project(":components:movie-fun-api")
+    compile project(":components:albums")
 
     compile "taglibs:standard:1.1.2"
     compile "org.springframework.boot:spring-boot-starter-web"
@@ -22,14 +22,9 @@ dependencies {
     testCompile "org.springframework.boot:spring-boot-starter-test"
 }
 
-def albumsUrl = "http://localhost:8081/albums"
-def moviesUrl = "http://localhost:8082/movies"
-test.environment([
-        "MOVIES_URL": "$moviesUrl",
-        "ALBUMS_URL": "$albumsUrl"
-])
-
 bootRun.environment([
-        "MOVIES_URL": "$moviesUrl",
-        "ALBUMS_URL": "$albumsUrl"
+        S3_ENDPOINTURL : "http://127.0.0.1:9000",
+        S3_ACCESSKEY   : "6TMD44HDBLVWF1I6Y4E8",
+        S3_SECRETKEY   : "Djda2IxZs89TwBCbInQWQiKydbprzji6XZ/veXPD",
+        S3_BUCKETNAME  : "movie-fun-course"
 ])
