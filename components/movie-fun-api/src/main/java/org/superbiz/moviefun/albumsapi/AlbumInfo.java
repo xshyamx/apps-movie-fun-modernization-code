@@ -1,6 +1,10 @@
 package org.superbiz.moviefun.albumsapi;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AlbumInfo {
+
     private Long id;
 
     private String artist;
