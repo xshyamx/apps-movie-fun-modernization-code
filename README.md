@@ -1,4 +1,4 @@
-	# Movie Fun!
+    # Movie Fun!
 
 Smoke Tests require server running on port 8080 by default.
 
@@ -25,26 +25,15 @@ cf create-service aws-s3 standard movies-s3
 
 ## After deploying to CF
 
-```sh
-cf env movie-fun-app
-```
-
-Populate the values from the above command 
 
 ```sh
-cf set-env movie-fun-app S3_ACCESSKEY "AKIAJTPQLEXPN3ELEVWQ" 
-cf set-env movie-fun-app S3_SECRETKEY  "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"
-cf set-env movie-fun-app S3_BUCKETNAME "cf-b54053b4-2206-441e-ad42-8646849043b2"
-```
-
-```sh
-cf env album-service
-```
-
-Populate the values from the above command 
-
-```sh
-cf set-env album-service S3_ACCESSKEY "AKIAJTPQLEXPN3ELEVWQ" 
-cf set-env album-service S3_SECRETKEY  "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"
-cf set-env album-service S3_BUCKETNAME "cf-b54053b4-2206-441e-ad42-8646849043b2"
+for appname in movie-fun-app album-service; do
+  app_guid=$(cf app "$appname" --guid)
+  cf curl "/v2/apps/${app_guid}/env" > env.json
+  jq '.system_env_json.VCAP_SERVICES["aws-s3"][0].credentials' env.json > creds.json
+  cf set-env movie-fun-app S3_ACCESSKEY "$(jq .access_key_id creds.json)"
+  cf set-env movie-fun-app S3_SECRETKEY  "$(jq .secret_access_key creds.json)"
+  cf set-env movie-fun-app S3_BUCKETNAME "$(jq .bucket creds.json)"
+  rm -f env.json creds.json
+done
 ```
